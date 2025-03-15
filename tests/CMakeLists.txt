@@ -39,8 +39,13 @@ target_link_libraries(elevator_tests
 # Add test to CTest
 add_test(NAME elevator_tests COMMAND elevator_tests)
 
-include(GoogleTest)
-gtest_discover_tests(elevator_tests)
+# Only discover tests when not in CI environment
+if(NOT DEFINED ENV{CI})
+  include(GoogleTest)
+  gtest_discover_tests(elevator_tests)
+else()
+  message(STATUS "Skipping test discovery in CI environment")
+endif()
 
 if(DEFINED ENV{CI})
   target_compile_definitions(elevator_tests PRIVATE CI=1)
