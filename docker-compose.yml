@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  elevator_sim:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=elevator_db
+      - DB_USER=elevator_user
+      - DB_PASSWORD=secret
+    stdin_open: true
+    tty: true
+
+  postgres:
+    image: postgres:14
+    environment:
+      - POSTGRES_DB=elevator_db
+      - POSTGRES_USER=elevator_user
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data: 

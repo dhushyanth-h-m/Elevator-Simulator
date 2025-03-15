@@ -1,0 +1,111 @@
+# Build directories and outputs
+build/
+out/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+**/bin/
+**/lib/
+install/
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+elevator_sim
+elevator_client
+elevator_tests
+*_tests
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+.vs/
+*.sublime-*
+.project
+.cproject
+.settings/
+.metadata/
+.classpath
+xcuserdata/
+*.xcodeproj/
+*.xcworkspace/
+
+# Database files
+*.db
+*.sql
+*.sqlite
+*.sqlite3
+pg_data/
+db_data/
+
+# Logs
+*.log
+logs/
+log/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Dependency directories
+external/
+third_party/
+!thirdparty/CMakeLists.txt
+
+# Environment variables
+.env
+
+# Python tools
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+venv/
+ENV/
+
+# Generated documentation
+docs/generated/
+docs/html/
+docs/latex/
+
+# User-specific files
+.clang-format
+compile_commands.json
+.ccls-cache/ 

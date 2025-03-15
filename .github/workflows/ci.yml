@@ -1,0 +1,49 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: elevator_db
+          POSTGRES_USER: elevator_user
+          POSTGRES_PASSWORD: secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake libpq-dev libpqxx-dev
+    
+    - name: Configure CMake
+      run: cmake -B build
+    
+    - name: Build
+      run: cmake --build build
+    
+    - name: Test
+      run: |
+        cd build
+        ctest --output-on-failure
+    
+    - name: Build Docker image
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: docker build -t elevator-sim -f docker/Dockerfile . 
