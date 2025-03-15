@@ -13,10 +13,13 @@ WORKDIR /app
 # Copy source code
 COPY . .
 
+# Clean any previous build artifacts
+RUN rm -rf build
+
 # Build the application
 RUN mkdir -p build && \
     cd build && \
-    cmake .. && \
+    cmake -DCMAKE_BUILD_TYPE=Release .. && \
     make
 
 # Runtime image
@@ -40,6 +43,7 @@ ENV DB_PORT=5432
 ENV DB_NAME=elevator_db
 ENV DB_USER=elevator_user
 ENV DB_PASSWORD=secret
+ENV CI=true
 
 # Run the application
 CMD ["./elevator_sim"] 
