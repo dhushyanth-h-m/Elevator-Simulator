@@ -11,11 +11,50 @@
 #endif
 
 DatabaseLogger::DatabaseLogger(const std::string& connString)
-    : connectionString(connString), connected(false)
+    : connected(false)
 #ifndef ELEVATOR_TESTING
     , conn(nullptr)
 #endif
 {
+    // Use environment variables if available, otherwise use the provided connection string
+    std::string host = std::getenv("DB_HOST") ? std::getenv("DB_HOST") : "localhost";
+    std::string port = std::getenv("DB_PORT") ? std::getenv("DB_PORT") : "5432";
+    std::string dbname = std::getenv("DB_NAME") ? std::getenv("DB_NAME") : "elevator_db";
+    std::string user = std::getenv("DB_USER") ? std::getenv("DB_USER") : "elevator_user";
+    std::string password = std::getenv("DB_PASSWORD") ? std::getenv("DB_PASSWORD") : "secret";
+
+    // If not empty, use the provided connection string, otherwise build from environment variables
+    if (!connString.empty()) {
+        connectionString = connString;
+    } else {
+        connectionString = "host=" + host + " port=" + port + " dbname=" + dbname + 
+                           " user=" + user + " password=" + password;
+    }
+    
+    std::cout << "Database connection will use: host=" << host << " port=" << port 
+              << " dbname=" << dbname << " user=" << user << std::endl;
+}
+
+// Additional constructor for testing
+DatabaseLogger::DatabaseLogger(bool connectToDb)
+    : connected(false)
+#ifndef ELEVATOR_TESTING
+    , conn(nullptr)
+#endif
+{
+    if (connectToDb) {
+        std::string host = std::getenv("DB_HOST") ? std::getenv("DB_HOST") : "localhost";
+        std::string port = std::getenv("DB_PORT") ? std::getenv("DB_PORT") : "5432";
+        std::string dbname = std::getenv("DB_NAME") ? std::getenv("DB_NAME") : "elevator_db";
+        std::string user = std::getenv("DB_USER") ? std::getenv("DB_USER") : "elevator_user";
+        std::string password = std::getenv("DB_PASSWORD") ? std::getenv("DB_PASSWORD") : "secret";
+
+        connectionString = "host=" + host + " port=" + port + " dbname=" + dbname + 
+                          " user=" + user + " password=" + password;
+    } else {
+        // No connection string needed for mocks
+        connectionString = "";
+    }
 }
 
 DatabaseLogger::~DatabaseLogger() {

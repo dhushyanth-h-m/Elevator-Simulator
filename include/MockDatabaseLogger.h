@@ -28,18 +28,16 @@ public:
     
     // Override methods that would normally connect to the database
     bool connect() override { return true; } // Pretend connection succeeded
-    void logEvent(const std::string& event) override {} // Do nothing
-    // Override other methods as needed
     
-    void logEvent(LogEventType eventType, int elevatorId, int fromFloor, int toFloor) {}
-    void logSystemEvent(LogEventType eventType) {}
+    void logEvent(LogEventType eventType, int elevatorId, int fromFloor, int toFloor) override {} 
+    void logSystemEvent(LogEventType eventType) override {}
     
-    void syncElevatorState(int elevatorId, int currentFloor, int destFloor, int direction, int status) {}
-    std::vector<std::tuple<int, int, int, Direction, ElevatorStatus>> getElevatorStates() { 
+    void syncElevatorState(int elevatorId, int currentFloor, int destFloor, int direction, int status) override {}
+    std::vector<std::tuple<int, int, int, Direction, ElevatorStatus>> getElevatorStates() override { 
         return {}; 
     }
     
-    std::vector<std::tuple<std::string, std::string, int, int, int>> getRecentLogs(int limit = 10) {
+    std::vector<std::tuple<std::string, std::string, int, int, int>> getRecentLogs(int limit = 10) override {
         return {};
     }
 };

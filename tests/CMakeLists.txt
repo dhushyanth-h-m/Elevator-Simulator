@@ -16,6 +16,11 @@ list(FILTER SOURCES EXCLUDE REGEX "../src/main.cpp")
 # Add definition to indicate we're in testing mode
 add_definitions(-DELEVATOR_TESTING)
 
+# Set CI flag if running in CI environment
+if(DEFINED ENV{CI})
+  add_definitions(-DCI)
+endif()
+
 # Add the test executable
 add_executable(elevator_tests
     test_controller.cpp

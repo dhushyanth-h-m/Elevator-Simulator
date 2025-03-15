@@ -42,6 +42,7 @@ private:
     
 public:
     DatabaseLogger(const std::string& connString = "dbname=elevator_db user=elevator_user password=secret host=localhost");
+    DatabaseLogger(bool connectToDb); // Constructor for testing/mocking
     ~DatabaseLogger();
     
     bool connect();
