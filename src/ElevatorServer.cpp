@@ -10,6 +10,7 @@
 #include <sys/select.h>
 #include <fcntl.h>
 #include <limits>
+#include <algorithm>
 
 ElevatorServer::ElevatorServer(ElevatorController& controller, int port)
     : controller(controller), running(false), port(port), serverSocket(-1) {
@@ -222,8 +223,11 @@ void ElevatorServer::handleClient(int clientSocket) {
         // Process the command
         std::string command(buffer, bytesRead);
         // Remove newlines and carriage returns
-        command.erase(std::remove(command.begin(), command.end(), '\n'), command.end());
-        command.erase(std::remove(command.begin(), command.end(), '\r'), command.end());
+        auto newEnd = std::remove(command.begin(), command.end(), '\n');
+        command.erase(newEnd, command.end());
+        
+        newEnd = std::remove(command.begin(), command.end(), '\r');
+        command.erase(newEnd, command.end());
         
         if (!command.empty()) {
             processCommand(clientSocket, command);
