@@ -9,6 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CI: true
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: elevator_db
+      DB_USER: elevator_user
+      DB_PASSWORD: secret
     
     services:
       postgres:

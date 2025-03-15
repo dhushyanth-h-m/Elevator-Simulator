@@ -5,6 +5,7 @@
 #include <mutex>
 #include <vector>
 #include <memory>
+#include "DatabaseLogger.h"
 
 // Same enum as in the real DatabaseLogger
 enum class LogEventType {
@@ -21,19 +22,15 @@ enum class LogEventType {
 };
 
 // Mock implementation that doesn't require PostgreSQL
-class DatabaseLogger {
-private:
-    bool connected;
-    
+class MockDatabaseLogger : public DatabaseLogger {
 public:
-    DatabaseLogger(const std::string& connString = "") : connected(false) {}
-    ~DatabaseLogger() {}
+    MockDatabaseLogger() : DatabaseLogger(false) {} // Initialize without connecting
     
-    bool connect() { connected = true; return true; }
-    void disconnect() { connected = false; }
-    bool isConnected() const { return connected; }
+    // Override methods that would normally connect to the database
+    bool connect() override { return true; } // Pretend connection succeeded
+    void logEvent(const std::string& event) override {} // Do nothing
+    // Override other methods as needed
     
-    // Empty implementations for test
     void logEvent(LogEventType eventType, int elevatorId, int fromFloor, int toFloor) {}
     void logSystemEvent(LogEventType eventType) {}
     

@@ -36,3 +36,7 @@ add_test(NAME elevator_tests COMMAND elevator_tests)
 
 include(GoogleTest)
 gtest_discover_tests(elevator_tests)
+
+if(DEFINED ENV{CI})
+  target_compile_definitions(elevator_tests PRIVATE CI=1)
+endif()
